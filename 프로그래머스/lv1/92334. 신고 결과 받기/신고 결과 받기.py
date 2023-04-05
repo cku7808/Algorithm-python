@@ -16,23 +16,48 @@
     
 #     return answer
 
-def solution(id_list, report, k):
-    report_list = {}
-    result = {}
+# def solution(id_list, report, k):
+#     report_list = {}
+#     result = {}
     
-    for ID in id_list:
-        report_list[ID] = [0,[]]
-        result[ID] = 0
+#     for ID in id_list:
+#         report_list[ID] = [0,[]]
+#         result[ID] = 0
     
-    for info in report:
-        reporter, reported = info.split() 
-        if reporter not in report_list[reported][1]:
-            report_list[reported][0] += 1
-            report_list[reported][1].append(reporter)
+#     for info in report:
+#         reporter, reported = info.split() 
+#         if reporter not in report_list[reported][1]:
+#             report_list[reported][0] += 1
+#             report_list[reported][1].append(reporter)
             
-    for key, val in report_list.items():
-        if val[0] >= k:
-            for reporter in val[1]:
-                result[reporter] += 1
-    return list(result.values())
+#     for key, val in report_list.items():
+#         if val[0] >= k:
+#             for reporter in val[1]:
+#                 result[reporter] += 1
+#     return list(result.values())
+
+# 강사님 코드
+def solution(id_list, report, k):
+    answer = [0]*len(id_list)
+    report_dict = {}
+    for id in id_list:
+        report_dict[id] = set([])
+        
+    for report_pair in report:
+        reporter, reported = report_pair.split()
+        # report_dict[reported].append(reporter)
+        report_dict[reported].add(reporter)
+        
+    k_reported = []
+    for id, v in report_dict.items():
+        if len(v) >= k:
+            k_reported.append(id)
+            
+    for ban_id in k_reported:
+        mail_rec_ids = report_dict[ban_id]
+        for id in mail_rec_ids:
+            idx = id_list.index(id)
+            answer[idx] += 1
+            
+    return answer
             
