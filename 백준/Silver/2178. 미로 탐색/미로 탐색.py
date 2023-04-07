@@ -3,32 +3,27 @@ from collections import deque
 
 n,m = map(int, sys.stdin.readline().split())
 
-grid = []
+graph = []
 for _ in range(n):
-    s = sys.stdin.readline().strip()
-    tmp = []
-    for elem in s:
-        tmp.append(int(elem))
-    grid.append(tmp)
+    graph.append(sys.stdin.readline().strip())
 
-visited = [[False]*m for _ in range(n)]
+visited = [[0]*m for _ in range(n)]
 
 
-q = deque([(0,0)])
-visited[0][0] = True
+dxs = [-1,1,0,0]
+dys = [0,0,-1,1]
 
-dxs = [1,-1,0,0]
-dys = [0,0,1,-1]
+q = deque()
+q.append((0,0))
+visited[0][0] = 1
 
 while q:
     x,y = q.popleft()
 
     for dx, dy in zip(dxs,dys):
         nx, ny = dx+x, dy+y
-
-        if 0<=nx<n and 0<=ny<m and grid[nx][ny] == 1 and visited[nx][ny] == False:
-            q.append((nx,ny))
-            visited[nx][ny] = True
-            grid[nx][ny] = grid[x][y] + 1
-
-print(grid[n-1][m-1])
+        if -1<nx<n and -1<ny<m:
+            if not visited[nx][ny] and graph[nx][ny] == "1":
+                q.append((nx,ny))
+                visited[nx][ny] = visited[x][y] + 1
+print(visited[n-1][m-1])
