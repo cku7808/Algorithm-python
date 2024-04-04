@@ -1,5 +1,3 @@
-from collections import deque
-
 def solution(people, limit):
     people = sorted(people)
     left, right = 0, len(people)-1
