@@ -10,7 +10,6 @@ def DFS(x, y, cnt, k_cnt):
     for dx, dy in zip(dxs, dys):
         nx, ny = dx+x, dy+y
         if -1<nx<n and -1<ny<n and not visited[nx][ny]:
-            #print((x,y), (nx,ny))
             if graph[nx][ny] < graph[x][y]:
                 visited[nx][ny] = True
                 max_cnt = max(DFS(nx, ny, cnt+1, k_cnt), max_cnt)
@@ -21,12 +20,10 @@ def DFS(x, y, cnt, k_cnt):
                         if graph[nx][ny] - i < graph[x][y]:
                         
                             graph[nx][ny] -= i
-                            #print("깎")
                             visited[nx][ny] = True
                             max_cnt = max(DFS(nx, ny, cnt+1, k_cnt+1), max_cnt)
                             graph[nx][ny] += i
                             visited[nx][ny] = False
-        #print(cnt)
     return cnt
 
 for i in range(1, T+1):
