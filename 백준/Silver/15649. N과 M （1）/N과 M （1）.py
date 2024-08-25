@@ -1,24 +1,19 @@
 import sys
-n,m = map(int,sys.stdin.readline().split())
-arr = [i for i in range(1,n+1)] #1,2,3,4
-check = [False]*n
 
-result = []
-def dfs(cnt):
+def backtrack(cnt):
     if cnt == m:
-        print(*result)
+        print(*arr)
         return
-    
-    for i in range(n):
-        if check[i]:
-            continue
-        else:
-            result.append(arr[i])
-            check[i] = True
-            cnt += 1
-            dfs(cnt)
-            result.pop()
-            check[i] = False
-            cnt -= 1
 
-dfs(0)
+    for i in range(1, n+1):
+        if not visited[i]:
+            visited[i] = True
+            arr.append(i)
+            backtrack(cnt+1)
+            arr.pop()
+            visited[i] = False
+
+n, m = map(int, input().split())
+visited = [False] * (n+1)
+arr = []
+backtrack(0)
