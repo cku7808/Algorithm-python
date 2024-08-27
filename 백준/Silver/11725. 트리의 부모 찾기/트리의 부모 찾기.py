@@ -1,23 +1,28 @@
 import sys
-sys.setrecursionlimit(100000000)
+sys.setrecursionlimit(10**6)
 
-n = int(sys.stdin.readline())
-visited = [False for _ in range(n+1)]
-graph = [[] for _ in range(n+1)]
-answer = [0]*(n+1)
+def func(node):
 
-def dfs(graph, visited, start):
-    visited[start] = True
-    for elem in graph[start]:
-        if not visited[elem]:
-            dfs(graph, visited, elem)
-            answer[elem] = start
+    for w in adjl[node]:
 
-for _ in range(n-1):
-    u, v = map(int, sys.stdin.readline().split())
-    graph[u].append(v)
-    graph[v].append(u)
+        if visited[w] == 1:
+            continue
+        visited[w] = 1
+        func(w)
+        parent[w] = node
 
-dfs(graph, visited, 1)
-for elem in answer[2:]:
-    print(elem)
+
+
+N = int(sys.stdin.readline())
+adjl = [[] for _ in range(N+1)]
+for _ in range(N-1):
+    arr = sys.stdin.readline().split()
+    i, j = int(arr[0]), int(arr[1])
+    adjl[i].append(j)
+    adjl[j].append(i)
+
+parent = [0] * (N+1)
+visited = [0] * (N+1)
+func(1)
+for idx in range(2, N+1):
+    print(parent[idx])
