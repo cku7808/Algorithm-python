@@ -1,34 +1,35 @@
+import sys
 from collections import deque
 
-dx = [0, 0, 1, -1]
-dy = [1, -1, 0, 0]
+n, m, k = map(int, sys.stdin.readline().split())
+graph = [sys.stdin.readline().strip() for _ in range(n)]
+start_x, start_y, dest_x, dest_y = map(int, sys.stdin.readline().split())
+start_x, start_y, dest_x, dest_y = start_x-1, start_y-1, dest_x-1, dest_y-1
 
-N, M, K = map(int, input().split())  # N:세로 M:가로, K: step
-D = [list(input()) for _ in range(N)]
-sx, sy, ex, ey = map(int, input().split())
-sx -= 1;
-sy -= 1;
-ex -= 1;
-ey -= 1
-check = [[float('inf')] * M for _ in range(N)]
-q = deque()
-q.append((sx, sy))
-check[sx][sy] = 0
+dxs = [0, 0, 1, -1]
+dys = [1, -1, 0, 0]
+MAXSIZE = 99999999
+
+visited = [[MAXSIZE]*m for _ in range(n)]
+
+q = deque([(start_x, start_y, 0)])
+visited[start_x][start_y] = 0
 
 while q:
-    x, y = q.popleft()
-    for i in range(4):
-        nx, ny = x + dx[i], y + dy[i]
-        nk = 1
-        while nk <= K and 0 <= nx < N and 0 <= ny < M and D[nx][ny] != '#' and check[nx][ny] > check[x][y]:
-            if check[nx][ny] == float('inf'):
-                q.append((nx, ny))
-                check[nx][ny] = check[x][y] + 1
-            nx += dx[i]
-            ny += dy[i]
-            nk += 1
 
-if check[ex][ey] == float('inf'):
+    x, y, cnt = q.popleft()
+
+    for dx, dy in zip(dxs, dys):
+        for i in range(1, k+1):
+            nx, ny = dx*i+x, dy*i+y
+            if -1 < nx < n and -1 < ny < m and graph[nx][ny] != "#" and visited[nx][ny] > cnt:
+                if visited[nx][ny] == MAXSIZE:
+                    visited[nx][ny] = cnt + 1
+                    q.append((nx, ny, cnt + 1))
+            else:
+                break
+
+if visited[dest_x][dest_y] == MAXSIZE:
     print(-1)
 else:
-    print(check[ex][ey])
+    print(visited[dest_x][dest_y])
