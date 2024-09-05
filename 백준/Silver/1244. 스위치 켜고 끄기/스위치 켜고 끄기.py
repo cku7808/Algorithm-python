@@ -1,35 +1,48 @@
-import sys
-# abs(num-1)
+def man(num):
 
-n = int(sys.stdin.readline())
-switches = list(map(int, sys.stdin.readline().split()))
-switches.insert(0,0)
-num_students = int(sys.stdin.readline())
+    for idx in range(N):
+        if idx+1 > N:
+            break
+        if (idx+1) % num == 0:
+            switch[idx] = 1-switch[idx]
 
-def male(num):
-    for i in range(num, n+1, num):
-        switches[i] = abs(switches[i]-1)
-        
-def female(num):
-    switches[num] = abs(switches[num]-1)
-    for i in range(1,n//2):
-        left, right = num-i, num+i
-        if left >= 1 and right <= n:
-            if switches[left] == switches[right]:
-                switches[left] = abs(switches[left]-1)
-                switches[right] = abs(switches[right]-1)
-            else:
-                break
-            
+def woman(num):
 
-for _ in range(num_students):
-    sex, num = map(int, sys.stdin.readline().split())
-    if sex == 1:
-        male(num)
+    jdx = num - 1
+    if switch[jdx]:
+        switch[jdx] = 0
     else:
-        female(num)
+        switch[jdx] = 1
+    l = jdx-1
+    r = jdx+1
+    if l < 0 or r > N-1:
+        return
 
-result = switches[1:]
+    if switch[l] == switch[r]:
+        while True:
+            switch[l] = 1-switch[l]
+            switch[r] = 1-switch[r]
+            l -= 1
+            r += 1
+            if l < 0 or r == N or switch[l] != switch[r]:
+                break
+    else:
+        return
 
-for i in range(0, n, 20):
-    print(*result[i:i+20])
+N = int(input())
+switch = list(map(int, input().split()))
+n = int(input())
+
+for _ in range(n):
+
+    s, num = map(int, input().split())
+    # 남자일 때
+    if s == 1:
+        man(num)
+
+    elif s == 2:
+        woman(num)
+
+n = 20
+for w in range(0, N+n, n):
+    print(*switch[w:w+n])
