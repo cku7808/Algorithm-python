@@ -1,10 +1,14 @@
 import sys, heapq
-sys.setrecursionlimit(10**9)
 
 def find(x):
-    if parent[x] != x:
-        parent[x] = find(parent[x])
-    return parent[x]
+    # if parent[x] != x:
+    #     parent[x] = find(parent[x])
+    # return parent[x]
+    while x != parent[x]: # 3 4
+        parent[x] = parent[parent[x]]
+        x = parent[x]
+    return x
+
 
 def union(a, b):
     a, b = find(a), find(b)
